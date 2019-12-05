@@ -1,0 +1,2 @@
+include ':app', ':base', ':login', ':componentbase', ':share', ':bookroom', ':music', ':book', ':music2'
+rootProject.name = 'ComponentDemo'
