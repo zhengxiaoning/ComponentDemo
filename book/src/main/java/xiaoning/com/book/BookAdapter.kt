@@ -32,12 +32,7 @@ class BookAdapter(val mContext: Context, val datas: ArrayList<BookBean.Data.Book
                     .into(cover)
                 bookname.text = datas[position].bookName
                 setOnClickListener {
-                    val intent = Intent(mContext, TestActivity::class.java)
-                    intent.putExtra(
-                        "url",
-                        "https://opas-file-aliyun.firstleap.cn${datas[position].pic}"
-                    )
-                    mContext.startActivity(intent)
+
                 }
             }
         }

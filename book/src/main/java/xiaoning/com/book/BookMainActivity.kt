@@ -38,12 +38,6 @@ class BookMainActivity : AppCompatActivity() {
             adapter.notifyDataSetChanged()
 
         }
-        test.singleClick(test.id) {
-            Log.d("test","0")
-        }
-        test1.singleClick(test1.id) {
-            Log.d("test","1")
-        }
 
 
     }
