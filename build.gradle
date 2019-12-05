@@ -3,7 +3,7 @@ ext {
     isApplication = false
     isLogin = false
     isShare = false
-    isBook = true
+    isBook = false
     isMusic = false
 }
 buildscript {
