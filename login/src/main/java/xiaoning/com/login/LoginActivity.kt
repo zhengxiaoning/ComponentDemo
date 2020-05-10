@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
         val originPath = intent.getStringExtra("originPath")
         val module = intent.getStringExtra("module")
         loginBt.setOnClickListener {
+            
             coroutine.launch {
                 when {
                     phoneNumber.text.toString() == "" -> Toast.makeText(
@@ -86,8 +87,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     suspend fun login() = withContext(Dispatchers.IO) {
-        bean = RetrofitManager.getInstance(LoginBaseUrl.BASE_URL)?.create(LoginApi::class.java)
-            ?.login(phoneNumber.text.toString(), verifyCodeEdit.text.toString(), Build.MODEL)
+        bean = RetrofitManager.getInstance(LoginBaseUrl.BASE_URL).create(LoginApi::class.java)
+            .login(phoneNumber.text.toString(), verifyCodeEdit.text.toString(), Build.MODEL)
 
+    }
+    companion object{
+        val a = 1
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutine.cancel()
     }
 }

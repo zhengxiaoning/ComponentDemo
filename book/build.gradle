@@ -58,10 +58,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     kapt 'com.alibaba:arouter-compiler:1.1.4'
     implementation project(':base')
-    if (rootProject.ext.isBook) {
-        if (!rootProject.ext.isLogin) {
-            implementation project(':login')
-        }
-    }
+//    if (rootProject.ext.isBook) {
+//        if (!rootProject.ext.isLogin) {
+//            implementation project(':login')
+//        }
+//    }
+    runtimeOnly project(':login')
 
 }

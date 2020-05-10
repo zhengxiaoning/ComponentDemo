@@ -1,20 +1,19 @@
 package xiaoning.com.book
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Checkable
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.alibaba.android.arouter.launcher.ARouter
 import kotlinx.android.synthetic.main.activity_book_main.*
 import kotlinx.coroutines.*
 import xiaoning.com.base.RetrofitManager
 import xiaoning.com.base.RouterPath
-import xiaoning.com.base.singleClick
 import xiaoning.com.componentbase.ServiceFactory
+//import xiaoning.com.login.LoginActivity
+import java.security.MessageDigest
 
 @Route(path = RouterPath.BOOKROOM, extras = 1)
 class BookMainActivity : AppCompatActivity() {
@@ -29,27 +28,46 @@ class BookMainActivity : AppCompatActivity() {
         adapter = BookAdapter(this, datas)
         recycler.adapter = adapter
         recycler.layoutManager = GridLayoutManager(this, 3)
+
         coroutineScope.launch {
             try {
                 loadData()
+                Log.d("book", "loaddata")
+                progress.visibility = View.GONE
             } catch (e: Exception) {
-                Toast.makeText(this@BookMainActivity, e.toString(), Toast.LENGTH_SHORT).show()
+                // progress.visibility = View.GONE
+                Log.d("book", "loaddata出错")
+                Toast.makeText(this@BookMainActivity, e.message, Toast.LENGTH_SHORT).show()
+
             }
             adapter.notifyDataSetChanged()
 
         }
 
-
     }
 
-    private suspend fun loadData() = withContext(Dispatchers.IO) {
+    lateinit var bean: BookBean
+    private suspend fun loadData() = withContext(Dispatchers.Main) {
+        try {
+            bean = RetrofitManager.getInstance(BookBaseUrl.URL).create(BookApi::class.java)
+                .getBookList(
+                    ServiceFactory.instance.getAcoount().getAccountSid().toString(),
+                    1,
+                    "stage16"
+                )
 
-        RetrofitManager.getInstance(BookBaseUrl.URL)?.create(BookApi::class.java)
-            ?.getBookList(
-                ServiceFactory.instance.getAcoount().getAccountSid().toString(),
-                1,
-                "stage4"
-            )?.data?.bookList?.data?.forEach { datas.add(it) }
+            bean.data.bookList.data.forEach { datas.add(it) }
+
+        } catch (e: Exception) {
+            Toast.makeText(this@BookMainActivity, "出错", Toast.LENGTH_SHORT).show()
+            Log.d("book", "1002出错")
+        }
+
+        Log.d("book", "${Thread.currentThread().name}2")
+//        val s = URL("https://www.jianshu.com/p/3aed63d0abf2").readText()
+//        withContext(Dispatchers.Main){
+//            text.text = s
+//        }
 
     }
 

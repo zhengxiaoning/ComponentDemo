@@ -25,9 +25,9 @@ class RetrofitManager constructor(url: String) {
 
     companion object {
         @Volatile
-        private var instance: RetrofitManager? = null
+        private lateinit var instance: RetrofitManager
 
-        fun getInstance(mUrl: String): RetrofitManager? {
+        fun getInstance(mUrl: String): RetrofitManager {
             //不能判断instance==null才新创建，否则用instance，这样会造成不同基地址只能创建一次，所以只能每次都创建新的单例
 //            instance ?: synchronized(this) {
 //                instance ?: RetrofitManager(mUrl).also { instance = it }
@@ -36,6 +36,7 @@ class RetrofitManager constructor(url: String) {
                 RetrofitManager(mUrl).also { instance = it }
             }
             return instance
+
         }
     }
 
